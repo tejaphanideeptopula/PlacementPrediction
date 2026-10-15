@@ -1,0 +1,530 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+Feature Engineering - Placement Prediction
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="card">
+
+    <h2>
+        Feature Engineering
+    </h2>
+
+    <p>
+        Normalization, standardization, outlier
+        handling, and encoding methods from
+        complete_code.py and feature_engg.py
+        on the Placement Prediction dataset.
+    </p>
+
+</div>
+
+
+{# =========================================================
+   1. Normalization / Standardization (complete_code)
+   ========================================================= #}
+
+
+<div class="card">
+
+    <h2>
+        1. Min-Max Normalization
+    </h2>
+
+    <p>
+        complete_code.normalize(df, exclude_cols)
+        &mdash; numeric columns scaled to [0, 1],
+        target columns untouched.
+    </p>
+
+    <div class="info-box">
+
+        {{ normalized_head|safe }}
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        2. Standardization + Outlier Handling
+    </h2>
+
+    <p>
+        complete_code.normalize (z-score) followed
+        by complete_code.outlier &mdash; Salary
+        Package clipped at Q3 + 1.5 &times; IQR.
+    </p>
+
+    <div class="info-box">
+
+        {{ standardized_head|safe }}
+
+    </div>
+
+</div>
+
+
+{# =========================================================
+   2. One-Hot Encoding (complete_code)
+   ========================================================= #}
+
+
+<div class="card">
+
+    <h2>
+        3. One-Hot Encoding
+    </h2>
+
+    <p>
+        complete_code.onehot &mdash; 80/20
+        stratified split, OneHotEncoder(drop="first")
+        fitted on training data only.
+    </p>
+
+    <h3>
+        Training Data
+    </h3>
+
+    <div class="info-box">
+
+        {{ ohe_train_head|safe }}
+
+    </div>
+
+    <h3>
+        Testing Data
+    </h3>
+
+    <div class="info-box">
+
+        {{ ohe_test_head|safe }}
+
+    </div>
+
+</div>
+
+
+{# =========================================================
+   3. Scaling methods (feature_engg)
+   ========================================================= #}
+
+
+<div class="card">
+
+    <h2>
+        4. Normalization &mdash; feature_engg.normalize
+    </h2>
+
+    <p>
+        MinMaxScaler fit on the training split,
+        applied to the test split.
+    </p>
+
+    <h3>
+        Train
+    </h3>
+
+    <div class="info-box">
+
+        {{ fe_norm_train_head|safe }}
+
+    </div>
+
+    <h3>
+        Test
+    </h3>
+
+    <div class="info-box">
+
+        {{ fe_norm_test_head|safe }}
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        5. Normalization &mdash; feature_engg.normalization
+    </h2>
+
+    <p>
+        Min-Max scaling without stratification.
+    </p>
+
+    <h3>
+        Train
+    </h3>
+
+    <div class="info-box">
+
+        {{ fe_norma_train_head|safe }}
+
+    </div>
+
+    <h3>
+        Test
+    </h3>
+
+    <div class="info-box">
+
+        {{ fe_norma_test_head|safe }}
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        6. Standardization &mdash; feature_engg.standardization
+    </h2>
+
+    <p>
+        StandardScaler (zero mean, unit variance) on
+        CGPA, Internships, Projects, and Workshops.
+    </p>
+
+    <h3>
+        Train
+    </h3>
+
+    <div class="info-box">
+
+        {{ fe_std_train_head|safe }}
+
+    </div>
+
+    <h3>
+        Test
+    </h3>
+
+    <div class="info-box">
+
+        {{ fe_std_test_head|safe }}
+
+    </div>
+
+</div>
+
+
+{# =========================================================
+   4. Encoding methods (feature_engg)
+   ========================================================= #}
+
+
+<div class="card">
+
+    <h2>
+        7. One-Hot Encoding &mdash; feature_engg.onehot
+    </h2>
+
+    <p>
+        Gender column encoded with
+        OneHotEncoder(drop="first").
+    </p>
+
+    <div class="info-box">
+
+        {{ fe_ohe_head|safe }}
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        8. Ordinal Encoding &mdash; feature_engg.ordinal
+    </h2>
+
+    <p>
+        CGPA binned into low / medium / high and
+        encoded with OrdinalEncoder.
+    </p>
+
+    <h3>
+        Train
+    </h3>
+
+    <div class="info-box">
+
+        {{ ordinal_train_head|safe }}
+
+    </div>
+
+    <h3>
+        Test
+    </h3>
+
+    <div class="info-box">
+
+        {{ ordinal_test_head|safe }}
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        9. Label Encoding &mdash; feature_engg.label_encode_branch
+    </h2>
+
+    <p>
+        Stream column encoded with LabelEncoder.
+    </p>
+
+    <div class="info-box">
+
+        <p>
+            <strong>Mapping:</strong>
+            {% for key, value in label_mapping.items() %}
+                {{ key }} = {{ value }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+
+        {{ label_train_head|safe }}
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        10. CGPA Category &mdash; feature_engg.create_cgpa_category
+    </h2>
+
+    <p>
+        CGPA binned into ordered categories.
+    </p>
+
+    <div class="info-box">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Category</th>
+
+                    <th>Students</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for item in cgpa_counts %}
+
+                <tr>
+
+                    <td>{{ item.name }}</td>
+
+                    <td>{{ item.count }}</td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+{# =========================================================
+   5. Cleaning / outliers / features (feature_engg)
+   ========================================================= #}
+
+
+<div class="card">
+
+    <h2>
+        11. Data Cleaning &mdash; feature_engg.data_cleaning
+    </h2>
+
+    <p>
+        Mean / median fills plus KNN imputation
+        (n=3) on the numerical columns.
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>{{ missing_before }}</h3>
+
+            <p>Missing Values Before</p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>{{ missing_after }}</h3>
+
+            <p>Missing Values After</p>
+
+        </div>
+
+    </div>
+
+    <div class="info-box">
+
+        {{ cleaned_head|safe }}
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        12. Outlier Detection &mdash; feature_engg.detect_outliers
+    </h2>
+
+    <p>
+        IQR method (Q1 &minus; 1.5 &times; IQR,
+        Q3 + 1.5 &times; IQR) on Salary Package.
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>{{ outlier_count }}</h3>
+
+            <p>Outlier Rows</p>
+
+        </div>
+
+    </div>
+
+    <div class="info-box">
+
+        {{ outliers_head|safe }}
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        13. Feature Types
+    </h2>
+
+    <p>
+        get_numerical_features and
+        get_categorical_features.
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>{{ numerical_cols|length }}</h3>
+
+            <p>Numerical Columns</p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>{{ categorical_cols|length }}</h3>
+
+            <p>Categorical Columns</p>
+
+        </div>
+
+    </div>
+
+    <div class="info-box">
+
+        <p>
+            <strong>Numerical:</strong>
+            {% for column in numerical_cols %}
+                <span class="column">{{ column }}</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            <strong>Categorical:</strong>
+            {% for column in categorical_cols %}
+                <span class="column">{{ column }}</span>
+            {% endfor %}
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        14. Model Features &mdash; feature_engg.select_model_features
+    </h2>
+
+    <p>
+        Features fed into the placement models,
+        target:
+        <strong>{{ target_name }}</strong>.
+    </p>
+
+    <div class="info-box">
+
+        <p>
+            {% for feature in selected_features %}
+                <span class="column">{{ feature }}</span>
+            {% endfor %}
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        15. Null Value Search &mdash; feature_engg.find_null_values
+    </h2>
+
+    <p>
+        Rows where Workshops is NULL.
+    </p>
+
+    <div class="info-box">
+
+        <pre class="code-block" style="white-space: pre-wrap; font-size: 0.85rem; margin: 0;">{{ null_output }}</pre>
+
+    </div>
+
+</div>
+
+
+{% endblock %}

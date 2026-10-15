@@ -1,0 +1,472 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+Unsupervised Learning - Placement Prediction
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="card">
+
+    <h2>
+        Unsupervised Learning
+    </h2>
+
+    <p>
+        K-Means clustering, DBSCAN clustering,
+        PCA dimensionality reduction,
+        One-Class SVM, and anomaly detection
+        on the Placement Prediction dataset.
+    </p>
+
+</div>
+
+
+{# =========================================================
+   1. K-Means Clustering
+   ========================================================= #}
+
+
+<div class="card">
+
+    <h2>
+        1. K-Means Clustering
+    </h2>
+
+    <p>
+        Clustering on CGPA, Internships,
+        and AptitudeTestScore
+        (K = 2).
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>
+                {{ km_labels_count }}
+            </h3>
+
+            <p>
+                Number of Clusters
+            </p>
+
+        </div>
+
+    </div>
+
+    {% if km_centers %}
+
+    <div class="info-box">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Cluster
+                    </th>
+
+                    <th>
+                        CGPA
+                    </th>
+
+                    <th>
+                        Internships
+                    </th>
+
+                    <th>
+                        AptitudeTestScore
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for center in km_centers %}
+
+                <tr>
+
+                    <td>
+                        Cluster {{ loop.index0 }}
+                    </td>
+
+                    {% for val in center %}
+
+                    <td>
+                        {{ val }}
+                    </td>
+
+                    {% endfor %}
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+
+{# =========================================================
+   2. DBSCAN Clustering
+   ========================================================= #}
+
+
+<div class="card">
+
+    <h2>
+        2. DBSCAN Clustering
+    </h2>
+
+    <p>
+        Density-based clustering on CGPA,
+        Internships, and AptitudeTestScore
+        (eps=0.5, min_samples=5).
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>
+                {{ db_clusters }}
+            </h3>
+
+            <p>
+                Clusters Found
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                {{ db_noise }}
+            </h3>
+
+            <p>
+                Noise Points
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                {% if db_silhouette %}
+                    {{ db_silhouette }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </h3>
+
+            <p>
+                Silhouette Score
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{# =========================================================
+   3. PCA (Principal Component Analysis)
+   ========================================================= #}
+
+
+<div class="card">
+
+    <h2>
+        3. PCA (Principal Component Analysis)
+    </h2>
+
+    <p>
+        Dimensionality reduction on
+        {{ pca_features|length }}
+        features: CGPA, Internships,
+        and AptitudeTestScore.
+    </p>
+
+    <div class="dataset-info">
+
+        {% for variance in pca_explained %}
+
+        <div class="info-box">
+
+            <h3>
+                {{ variance }}
+            </h3>
+
+            <p>
+                PC{{ loop.index }} Variance Ratio
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <div class="info-box">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Feature
+                    </th>
+
+                    {% for i in range(pca_explained|length) %}
+
+                    <th>
+                        PC{{ i + 1 }}
+                    </th>
+
+                    {% endfor %}
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for comp in pca_components %}
+
+                <tr>
+
+                    <td>
+                        {{ comp.feature }}
+                    </td>
+
+                    {% for val in comp["values"] %}
+
+                    <td>
+                        {{ val }}
+                    </td>
+
+                    {% endfor %}
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+{# =========================================================
+   4. One-Class SVM (Anomaly Detection)
+   ========================================================= #}
+
+
+<div class="card">
+
+    <h2>
+        4. One-Class SVM &mdash; Anomaly Detection
+    </h2>
+
+    <p>
+        complete_code.onesvm &mdash; OneClassSVM
+        (kernel="rbf", nu=0.05) on a 5000-row
+        sample of CGPA, Internships, and
+        AptitudeTestScore after standardization.
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>
+                {% if svm_normal is not none %}
+                    {{ svm_normal }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </h3>
+
+            <p>
+                Normal Samples
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                {% if svm_anomaly is not none %}
+                    {{ svm_anomaly }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </h3>
+
+            <p>
+                Anomaly Samples
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="info-box">
+
+        <pre style="white-space: pre-wrap; font-size: 0.85rem; margin: 0;">{{ svm_output }}</pre>
+
+    </div>
+
+</div>
+
+
+{# =========================================================
+   5. Anomaly Records
+   ========================================================= #}
+
+
+<div class="card">
+
+    <h2>
+        5. Anomaly Detection Summary
+    </h2>
+
+    <p>
+        complete_code.anomaly_detection &mdash;
+        records flagged as anomalies
+        (OneClassSVM_Label = -1).
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>
+                {% if anomaly_total is not none %}
+                    {{ anomaly_total }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </h3>
+
+            <p>
+                Total Anomalies
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                {% if normal_total is not none %}
+                    {{ normal_total }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </h3>
+
+            <p>
+                Total Normal
+            </p>
+
+        </div>
+
+    </div>
+
+    {% if anomaly_records %}
+
+    <div class="info-box">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        CGPA
+                    </th>
+
+                    <th>
+                        Internships
+                    </th>
+
+                    <th>
+                        AptitudeTestScore
+                    </th>
+
+                    <th>
+                        OneClassSVM_Label
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for record in anomaly_records %}
+
+                <tr>
+
+                    <td>
+                        {{ record.CGPA }}
+                    </td>
+
+                    <td>
+                        {{ record.Internships }}
+                    </td>
+
+                    <td>
+                        {{ record.AptitudeTestScore }}
+                    </td>
+
+                    <td>
+                        {{ record.OneClassSVM_Label }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% endif %}
+
+    <div class="info-box">
+
+        <pre style="white-space: pre-wrap; font-size: 0.85rem; margin: 0;">{{ anomaly_output }}</pre>
+
+    </div>
+
+</div>
+
+
+{% endblock %}

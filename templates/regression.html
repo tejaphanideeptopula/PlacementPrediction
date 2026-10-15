@@ -1,0 +1,995 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+Regression Analysis
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="card">
+
+    <h2>
+        Regression Analysis
+    </h2>
+
+    <p>
+        Simple Linear Regression, Simple Logistic Regression,
+        and multi-model regression on the Placement Prediction dataset.
+    </p>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        1. Simple Linear Regression
+    </h2>
+
+    <p>
+        Predicting
+        <strong>
+            {{ linear.target }}
+        </strong>
+        from a single feature
+        <strong>
+            {{ linear.feature }}
+        </strong>
+        (
+        {{ linear.samples }}
+        samples after dropping missing target rows
+        ).
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>
+                {{ linear.mse }}
+            </h3>
+
+            <p>
+                MSE
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                {{ linear.rsq }}
+            </h3>
+
+            <p>
+                R&sup2;
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                {{ linear.samples }}
+            </h3>
+
+            <p>
+                Samples Used
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        2. Simple Linear Regression &mdash; Gradient Descent
+    </h2>
+
+    <p>
+        Predicting
+        <strong>
+            {{ gd.target }}
+        </strong>
+        from
+        <strong>
+            {{ gd.feature }}
+        </strong>
+        using gradient descent
+        (learning rate 0.001,
+        100 iterations,
+        {{ gd.samples }}
+        samples
+        ).
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>
+                {{ gd.theta0 }}
+            </h3>
+
+            <p>
+                Intercept (&theta;&#8320;)
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                {{ gd.theta1 }}
+            </h3>
+
+            <p>
+                Slope (&theta;&#8321;)
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                {{ gd.mse }}
+            </h3>
+
+            <p>
+                MSE
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                {{ gd.rsq }}
+            </h3>
+
+            <p>
+                R&sup2;
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        3. Simple Logistic Regression
+    </h2>
+
+    <p>
+        Classifying
+        <strong>
+            {{ logistic.target }}
+        </strong>
+        from a single feature
+        <strong>
+            {{ logistic.feature }}
+        </strong>
+        &mdash;
+        decision function:
+        y = {{ logistic.theta0 }} + ({{ logistic.theta1 }} &times; CGPA)
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>
+                {{ logistic.theta0 }}
+            </h3>
+
+            <p>
+                Intercept (&theta;&#8320;)
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                {{ logistic.theta1 }}
+            </h3>
+
+            <p>
+                Coefficient (&theta;&#8321;)
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                {{ logistic.accuracy }}
+            </h3>
+
+            <p>
+                Test Accuracy
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="info-box">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Train Samples
+                    </th>
+
+                    <th>
+                        Test Samples
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td>
+                        {{ logistic.train_samples }}
+                    </td>
+
+                    <td>
+                        {{ logistic.test_samples }}
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        4. Built-in Linear Regression &mdash; Sample Data
+    </h2>
+
+    <p>
+        Built-in scikit-learn LinearRegression on sample data:
+        predicting
+        <strong>
+            {{ builtin_linear.y }}
+        </strong>
+        from
+        <strong>
+            {{ builtin_linear.x }}
+        </strong>.
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>
+                {{ builtin_linear.theta0 }}
+            </h3>
+
+            <p>
+                Intercept (&theta;&#8320;)
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                {{ builtin_linear.theta1 }}
+            </h3>
+
+            <p>
+                Slope (&theta;&#8321;)
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                {{ builtin_linear.mse }}
+            </h3>
+
+            <p>
+                MSE
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                {{ builtin_linear.rsq }}
+            </h3>
+
+            <p>
+                R&sup2;
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        5. Built-in Logistic Regression &mdash; Sample Data
+    </h2>
+
+    <p>
+        Built-in scikit-learn LogisticRegression on sample data:
+        classifying
+        <strong>
+            {{ builtin_logistic.y }}
+        </strong>
+        from
+        <strong>
+            {{ builtin_logistic.x }}
+        </strong>.
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>
+                {{ builtin_logistic.theta0 }}
+            </h3>
+
+            <p>
+                Intercept (&theta;&#8320;)
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                {{ builtin_logistic.theta1 }}
+            </h3>
+
+            <p>
+                Coefficient (&theta;&#8321;)
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                {{ builtin_logistic.accuracy }}
+            </h3>
+
+            <p>
+                Accuracy
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="info-box">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Predictions
+                    </th>
+
+                    <th>
+                        Actual Values
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td>
+                        {{ builtin_logistic.predictions }}
+                    </td>
+
+                    <td>
+                        {{ builtin_logistic.actual }}
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        6. Regression Models
+    </h2>
+
+    <p>
+        Predicting
+        <strong>
+            {{ multi.target }}
+        </strong>
+        from
+        {{ multi.features|length }}
+        numeric features
+        (
+        {{ multi.samples }}
+        samples after dropping missing rows
+        ).
+    </p>
+
+    <div class="info-box">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Model
+                    </th>
+
+                    <th>
+                        R&sup2;
+                    </th>
+
+                    <th>
+                        RMSE
+                    </th>
+
+                    <th>
+                        MAE
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for item in multi.results %}
+
+                <tr>
+
+                    <td>
+                        {{ item.model }}
+                    </td>
+
+                    <td>
+                        {{ item.r2 }}
+                    </td>
+
+                    <td>
+                        {{ item.rmse }}
+                    </td>
+
+                    <td>
+                        {{ item.mae }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+{# =========================================================
+   Classification Models from complete_code.py
+   ========================================================= #}
+
+
+<div class="card">
+
+    <h2>
+        Classification Models
+    </h2>
+
+    <p>
+        Decision Tree, Random Forest, AdaBoost,
+        Gradient Boosting, and XGBoost classifiers
+        trained on CGPA, Internships, and
+        AptitudeTestScore to predict PlacementStatus.
+    </p>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        7. Decision Tree
+    </h2>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>
+                {{ dt_accuracy }}
+            </h3>
+
+            <p>
+                Accuracy
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        8. Pruned Decision Tree
+    </h2>
+
+    <p>
+        max_depth=4, min_samples_split=10,
+        min_samples_leaf=5
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>
+                {{ dt_pruned_accuracy }}
+            </h3>
+
+            <p>
+                Accuracy
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        9. Random Forest
+    </h2>
+
+    <p>
+        n_estimators=100, max_depth=5
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>
+                {{ rf_accuracy }}
+            </h3>
+
+            <p>
+                Accuracy
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        10. Model Comparison
+    </h2>
+
+    <p>
+        Prediction comparison for sample students
+        across Decision Tree, Pruned Decision Tree,
+        and Random Forest.
+    </p>
+
+    <div class="info-box">
+
+        <pre style="white-space: pre-wrap; font-size: 0.85rem; margin: 0;">{{ compare_output }}</pre>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        11. AdaBoost
+    </h2>
+
+    <p>
+        n_estimators=50, learning_rate=1.0
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>
+                {{ ab_accuracy }}
+            </h3>
+
+            <p>
+                Accuracy
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        12. Gradient Boosting
+    </h2>
+
+    <p>
+        n_estimators=100, learning_rate=0.1,
+        max_depth=3, subsample=0.8
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>
+                {{ gb_accuracy }}
+            </h3>
+
+            <p>
+                Accuracy
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        13. XGBoost
+    </h2>
+
+    <p>
+        n_estimators=100, learning_rate=0.1,
+        max_depth=3, subsample=0.8
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>
+                {{ xgb_accuracy }}
+            </h3>
+
+            <p>
+                Accuracy
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{# =========================================================
+   New methods: feature_engg / complete_code
+   ========================================================= #}
+
+
+<div class="card">
+
+    <h2>
+        14. Random Forest &mdash; All Features
+    </h2>
+
+    <p>
+        feature_engg.run_random_forest_classifier
+        &mdash; 100 trees on every available
+        feature (numeric + one-hot encoded).
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>
+                {% if rf_all_accuracy is not none %}
+                    {{ rf_all_accuracy }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </h3>
+
+            <p>
+                Accuracy
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        15. Platt Scaling
+    </h2>
+
+    <p>
+        complete_code.platt_scaling &mdash;
+        RandomForest probabilities calibrated
+        with logistic regression.
+    </p>
+
+    {% if platt and platt.raw and platt.calibrated %}
+
+    <div class="info-box">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Sample
+                    </th>
+
+                    <th>
+                        Raw Probability
+                    </th>
+
+                    <th>
+                        Platt Calibrated Probability
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for raw in platt.raw %}
+
+                <tr>
+
+                    <td>
+                        {{ loop.index }}
+                    </td>
+
+                    <td>
+                        {{ raw }}
+                    </td>
+
+                    <td>
+                        {{ platt.calibrated[loop.index0] }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+    <div class="alert alert-warning">
+
+        Platt scaling results are not available.
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        16. Grid Search
+    </h2>
+
+    <p>
+        complete_code.grid_search &mdash;
+        GridSearchCV over SVM hyperparameters
+        C=[0.1, 1, 10] and
+        gamma=[0.001, 0.01, 0.1, 1],
+        5-fold cross-validation.
+    </p>
+
+    {% if grid and not grid.error %}
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>
+                {{ grid.best_score }}
+            </h3>
+
+            <p>
+                Best CV Score
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                {{ grid.test_accuracy }}
+            </h3>
+
+            <p>
+                Test Accuracy
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="info-box">
+
+        <p>
+            <strong>Best Parameters:</strong>
+            {{ grid.best_params }}
+        </p>
+
+    </div>
+
+    {% else %}
+
+    <div class="alert alert-warning">
+
+        Grid search results are not available.
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        17. Random Search
+    </h2>
+
+    <p>
+        complete_code.random_search &mdash;
+        RandomizedSearchCV over SVM hyperparameters
+        with log-uniform distributions, 10 iterations,
+        5-fold cross-validation.
+    </p>
+
+    {% if random_search and not random_search.error %}
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>
+                {{ random_search.best_score }}
+            </h3>
+
+            <p>
+                Best CV Score
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                {{ random_search.test_accuracy }}
+            </h3>
+
+            <p>
+                Test Accuracy
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="info-box">
+
+        <p>
+            <strong>Best Parameters:</strong>
+            {{ random_search.best_params }}
+        </p>
+
+    </div>
+
+    {% else %}
+
+    <div class="alert alert-warning">
+
+        Random search results are not available.
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+
+{% endblock %}

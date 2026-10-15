@@ -1,0 +1,76 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="prediction-container">
+
+    <h2>Student Placement Prediction</h2>
+
+    <p>Enter student details to predict placement status.</p>
+
+    <form method="POST">
+
+        {% for col in numeric_cols %}
+        <div class="form-group">
+            <label>{{ col }}</label>
+            <input
+                type="number"
+                step="any"
+                name="{{ col }}"
+                value="{{ values.get(col, '') }}"
+                required
+            >
+        </div>
+        {% endfor %}
+
+        {% for col in categorical_cols %}
+        <div class="form-group">
+            <label>{{ col }}</label>
+
+            <select name="{{ col }}" required>
+                <option value="">Select {{ col }}</option>
+
+                {% for option in categories[col] %}
+                <option
+                    value="{{ option }}"
+                    {% if values.get(col) == option|string %}
+                    selected
+                    {% endif %}
+                >
+                    {{ option }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        {% endfor %}
+
+        <button type="submit">
+            Predict Placement
+        </button>
+
+    </form>
+
+    {% if result %}
+    <div class="result-box">
+        <h3>Prediction Result</h3>
+
+        <p>
+            Placement Status:
+            <strong>{{ result.prediction }}</strong>
+        </p>
+
+        <p>
+            Model Confidence:
+            <strong>{{ result.confidence }}%</strong>
+        </p>
+    </div>
+    {% endif %}
+
+    {% if error %}
+    <p class="error-message">{{ error }}</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}

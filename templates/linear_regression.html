@@ -1,0 +1,324 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+Linear Regression - Placement Prediction
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="card">
+
+    <h2>
+        Linear Regression
+    </h2>
+
+    <p>
+        Simple linear regression with gradient
+        descent and scikit-learn from
+        complete_code.py and feature_engg.py.
+    </p>
+
+</div>
+
+
+{# =========================================================
+   1. Gradient Descent (complete_code)
+   ========================================================= #}
+
+
+<div class="card">
+
+    <h2>
+        1. Linear Regression &mdash; Gradient Descent
+    </h2>
+
+    <p>
+        complete_code.simple_linear_regression_GD
+        &mdash; CGPA predicts Salary Package,
+        learning_rate=0.001, iterations=1000.
+    </p>
+
+    {% if gd %}
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>{{ gd.theta0 }}</h3>
+
+            <p>Theta0 (Intercept)</p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>{{ gd.theta1 }}</h3>
+
+            <p>Theta1 (Slope)</p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>{{ gd.mse }}</h3>
+
+            <p>MSE</p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>{{ gd.rsq }}</h3>
+
+            <p>R&sup2; Score</p>
+
+        </div>
+
+    </div>
+
+    <div class="image-grid">
+
+        {% for figure in gd.figures %}
+
+        <div class="image-card">
+
+            <img src="{{ url_for('static', filename='plots/' + figure) }}"
+                 alt="Gradient descent plot">
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="alert alert-error">
+
+        Gradient descent could not be computed.
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+
+{# =========================================================
+   2. Scikit-learn (complete_code)
+   ========================================================= #}
+
+
+<div class="card">
+
+    <h2>
+        2. Linear Regression &mdash; Scikit-Learn
+    </h2>
+
+    <p>
+        complete_code.simple_linear_regression
+        &mdash; LinearRegression fitted on
+        CGPA vs Salary Package.
+    </p>
+
+    {% if sk %}
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>{{ sk.intercept }}</h3>
+
+            <p>Intercept</p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>{{ sk.coefficient }}</h3>
+
+            <p>Coefficient</p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>{{ sk.mse }}</h3>
+
+            <p>MSE</p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>{{ sk.rsq }}</h3>
+
+            <p>R&sup2; Score</p>
+
+        </div>
+
+    </div>
+
+    {% else %}
+
+    <div class="alert alert-error">
+
+        Scikit-learn regression could not be computed.
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+
+{# =========================================================
+   3. feature_engg methods
+   ========================================================= #}
+
+
+<div class="card">
+
+    <h2>
+        3. Simple Linear Regression &mdash; feature_engg
+    </h2>
+
+    <p>
+        feature_engg.simple_linear_regression on
+        {{ fe_linear.samples }} samples &mdash;
+        target: {{ fe_linear.target }},
+        feature: {{ fe_linear.feature }}.
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>{{ fe_linear.mse }}</h3>
+
+            <p>MSE</p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>{{ fe_linear.rsq }}</h3>
+
+            <p>RSQ</p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        4. Gradient Descent &mdash; feature_engg
+    </h2>
+
+    <p>
+        feature_engg.gradient_descent &mdash;
+        target: {{ fe_gd.target }},
+        feature: {{ fe_gd.feature }},
+        {{ fe_gd.samples }} samples.
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>{{ fe_gd.theta0 }}</h3>
+
+            <p>Theta0</p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>{{ fe_gd.theta1 }}</h3>
+
+            <p>Theta1</p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>{{ fe_gd.mse }}</h3>
+
+            <p>MSE</p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>{{ fe_gd.rsq }}</h3>
+
+            <p>RSQ</p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        5. Built-in Sample &mdash; Study Hours vs Exam Score
+    </h2>
+
+    <p>
+        feature_engg.builtin_linear_sample
+        &mdash; {{ builtin.x }} predicts
+        {{ builtin.y }}.
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>{{ builtin.theta0 }}</h3>
+
+            <p>Theta0</p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>{{ builtin.theta1 }}</h3>
+
+            <p>Theta1</p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>{{ builtin.mse }}</h3>
+
+            <p>MSE</p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>{{ builtin.rsq }}</h3>
+
+            <p>RSQ</p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock %}

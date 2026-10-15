@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+Student Placement Prediction
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="hero">
+
+    <h1>
+        Student Placement Prediction
+    </h1>
+
+    <p>
+        A dashboard for exploring the student placement dataset
+        and performing analysis.
+    </p>
+
+</div>
+
+
+<div class="card-grid">
+
+
+    <a href="{{ url_for('load_page') }}"
+       class="card">
+
+        <h2>
+            📥 Data Loading
+        </h2>
+
+        <p>
+            Load the raw dataset, clean it,
+            and preview rows & schema.
+        </p>
+
+    </a>
+
+
+    <a href="{{ url_for('eda_page') }}"
+       class="card">
+
+        <h2>
+            📊 Exploratory Data Analysis
+        </h2>
+
+        <p>
+            Summary statistics, correlations,
+            distributions, and charts.
+        </p>
+
+    </a>
+
+
+    <a href="{{ url_for('regression_page') }}"
+       class="card">
+
+        <h2>
+            📈 Regression & Classification
+        </h2>
+
+        <p>
+            Linear, logistic, Decision Tree,
+            Random Forest, AdaBoost, Gradient
+            Boosting, and XGBoost models.
+        </p>
+
+    </a>
+
+
+    <a href="{{ url_for('unsupervised_page') }}"
+       class="card">
+
+        <h2>
+            🔬 Unsupervised Learning
+        </h2>
+
+        <p>
+            K-Means, DBSCAN clustering,
+            and PCA dimensionality reduction.
+        </p>
+
+    </a>
+
+
+    <div class="card card-disabled">
+
+        <h2>
+            🔮 Predict
+        </h2>
+
+        <p>
+            Coming soon — enter a student
+            profile and get a prediction.
+        </p>
+
+    </div>
+
+
+</div>
+
+
+<div class="dataset-note">
+
+    <h2>
+        Dataset
+    </h2>
+
+    <p>
+
+        <strong>
+            Placement Prediction Dataset
+        </strong>
+
+        — 50,000 student records containing
+        academic, skill-test, and activity
+        features with the target column
+
+        <strong>
+            PlacementStatus
+        </strong>.
+
+    </p>
+
+</div>
+
+
+{% endblock %}

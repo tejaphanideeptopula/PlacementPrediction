@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+Logistic Regression - Placement Prediction
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="card">
+
+    <h2>
+        Logistic Regression
+    </h2>
+
+    <p>
+        Binary classification of PlacementStatus
+        from CGPA using complete_code.py and
+        feature_engg.py methods.
+    </p>
+
+</div>
+
+
+{# =========================================================
+   1. complete_code.simple_logistic_regression
+   ========================================================= #}
+
+
+<div class="card">
+
+    <h2>
+        1. Logistic Regression &mdash; complete_code
+    </h2>
+
+    <p>
+        complete_code.simple_logistic_regression
+        &mdash; CGPA predicts PlacementStatus,
+        max_iter=1000, stratified 80/20 split.
+    </p>
+
+    {% if logit %}
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>{{ logit.theta0 }}</h3>
+
+            <p>Theta0 (Intercept)</p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>{{ logit.theta1 }}</h3>
+
+            <p>Theta1 (Coefficient)</p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>{{ logit.accuracy }}</h3>
+
+            <p>Accuracy</p>
+
+        </div>
+
+    </div>
+
+    {% if logit.confusion_figure %}
+
+    <div class="image-grid">
+
+        <div class="image-card">
+
+            <img src="{{ url_for('static', filename='plots/' + logit.confusion_figure) }}"
+                 alt="Confusion matrix">
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+    {% if logit.samples %}
+
+    <div class="info-box">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>CGPA</th>
+
+                    <th>Actual</th>
+
+                    <th>Probability</th>
+
+                    <th>Prediction</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for row in logit.samples %}
+
+                <tr>
+
+                    <td>{{ row.cgpa }}</td>
+
+                    <td>{{ row.actual }}</td>
+
+                    <td>{{ row.probability }}</td>
+
+                    <td>{{ row.prediction }}</td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% endif %}
+
+    {% else %}
+
+    <div class="alert alert-error">
+
+        Logistic regression could not be computed.
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+
+{# =========================================================
+   2. feature_engg.simple_logistic_regression_GD
+   ========================================================= #}
+
+
+<div class="card">
+
+    <h2>
+        2. Logistic Regression &mdash; feature_engg
+    </h2>
+
+    <p>
+        feature_engg.simple_logistic_regression_GD
+        &mdash; target: {{ fe_logit.target }},
+        feature: {{ fe_logit.feature }}.
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>{{ fe_logit.theta0 }}</h3>
+
+            <p>Theta0</p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>{{ fe_logit.theta1 }}</h3>
+
+            <p>Theta1</p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>{{ fe_logit.accuracy }}</h3>
+
+            <p>Accuracy</p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>{{ fe_logit.train_samples }} / {{ fe_logit.test_samples }}</h3>
+
+            <p>Train / Test Samples</p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{# =========================================================
+   3. Built-in sample
+   ========================================================= #}
+
+
+<div class="card">
+
+    <h2>
+        3. Built-in Sample &mdash; Study Hours vs Pass Status
+    </h2>
+
+    <p>
+        feature_engg.builtin_logistic_sample
+        &mdash; {{ builtin.x }} predicts
+        {{ builtin.y }}.
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>{{ builtin.theta0 }}</h3>
+
+            <p>Theta0</p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>{{ builtin.theta1 }}</h3>
+
+            <p>Theta1</p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>{{ builtin.accuracy }}</h3>
+
+            <p>Accuracy</p>
+
+        </div>
+
+    </div>
+
+    <div class="info-box">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Actual</th>
+
+                    <th>Predicted</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for actual in builtin.actual %}
+
+                <tr>
+
+                    <td>{{ actual }}</td>
+
+                    <td>{{ builtin.predictions[loop.index0] }}</td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+{% endblock %}
