@@ -281,14 +281,209 @@ Unsupervised Learning - Placement Prediction
 
 
 {# =========================================================
-   4. One-Class SVM (Anomaly Detection)
+   4. Full PCA (All Numeric Features)
    ========================================================= #}
 
 
 <div class="card">
 
     <h2>
-        4. One-Class SVM &mdash; Anomaly Detection
+        4. Full PCA (All Numeric Features)
+    </h2>
+
+    <p>
+        Standardized PCA on {{ pca_full_features }}
+        numeric features (all numeric columns
+        except StudentID, PlacementStatus,
+        IsAnomaly, and Salary Package),
+        median-imputed, computed with sklearn.
+    </p>
+
+    <div class="dataset-info">
+
+        <div class="info-box">
+
+            <h3>
+                {{ pca_full_pc1 }}%
+            </h3>
+
+            <p>
+                PC1 Variance
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                {{ pca_full_pc2 }}%
+            </h3>
+
+            <p>
+                PC2 Variance
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                {{ pca_full_n90 }}
+            </h3>
+
+            <p>
+                Components for 90% Variance
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>
+                {{ pca_full_n95 }}
+            </h3>
+
+            <p>
+                Components for 95% Variance
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="info-box">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Component
+                    </th>
+
+                    <th>
+                        Variance %
+                    </th>
+
+                    <th>
+                        Cumulative %
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for row in pca_full_table %}
+
+                <tr>
+
+                    <td>
+                        {{ row.component }}
+                    </td>
+
+                    <td>
+                        {{ row.variance }}
+                    </td>
+
+                    <td>
+                        {{ row.cumulative }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="info-box">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Component
+                    </th>
+
+                    <th>
+                        Top Features (Loading)
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for pc in pca_full_top_loadings %}
+
+                <tr>
+
+                    <td>
+                        {{ pc.component }}
+                    </td>
+
+                    <td>
+                        {% for f in pc.features %}
+                            {{ f.name }} ({{ f.loading }}){% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="chart-box">
+
+        <img src="{{ url_for('static', filename='plots/pca_scree.png') }}"
+             alt="PCA scree plot">
+
+        <p style="text-align: center; font-size: 0.9rem;">
+            Scree plot &mdash; explained variance per component
+        </p>
+
+    </div>
+
+    <div class="chart-box">
+
+        <img src="{{ url_for('static', filename='plots/pca_scatter.png') }}"
+             alt="PCA PC1 vs PC2 scatter">
+
+        <p style="text-align: center; font-size: 0.9rem;">
+            PC1 vs PC2 projection (5000-row sample,
+            colored by PlacementStatus)
+        </p>
+
+    </div>
+
+</div>
+
+
+{# =========================================================
+   5. One-Class SVM (Anomaly Detection)
+   ========================================================= #}
+
+
+<div class="card">
+
+    <h2>
+        5. One-Class SVM &mdash; Anomaly Detection
     </h2>
 
     <p>
@@ -344,14 +539,14 @@ Unsupervised Learning - Placement Prediction
 
 
 {# =========================================================
-   5. Anomaly Records
+   6. Anomaly Records
    ========================================================= #}
 
 
 <div class="card">
 
     <h2>
-        5. Anomaly Detection Summary
+        6. Anomaly Detection Summary
     </h2>
 
     <p>

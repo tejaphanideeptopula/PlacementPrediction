@@ -4,11 +4,16 @@ import os
 import re
 from contextlib import redirect_stdout
 
+import numpy as np
+import pandas as pd
+
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 from flask import Flask, render_template, request
+
+import pca_analysis as pca_mod
 
 from models.load import load_data
 from models import eda as eda_module
@@ -768,6 +773,42 @@ def _compute_unsupervised(cleaned_df):
             .to_dict(orient="records")
         )
 
+    full_X, full_feats = pca_mod.get_feature_matrix(cleaned_df)
+    full_scaled = pca_mod.preprocess(full_X)
+    full_pca = pca_mod.run_pca(full_scaled)
+    full_var = full_pca.explained_variance_ratio_
+    full_cum = np.cumsum(full_var)
+
+    pca_full_table = [
+        {
+            "component": f"PC{i + 1}",
+            "variance": round(float(v) * 100, 2),
+            "cumulative": round(float(c) * 100, 2),
+        }
+        for i, (v, c) in enumerate(zip(full_var, full_cum))
+    ]
+
+    loadings_df = pd.DataFrame(
+        full_pca.components_.T,
+        index=full_feats,
+        columns=[f"PC{i + 1}" for i in range(full_pca.n_components_)],
+    )
+    pca_full_top_loadings = []
+    for i in range(min(5, full_pca.n_components_)):
+        col = f"PC{i + 1}"
+        top = loadings_df[col].abs().sort_values(ascending=False).head(3)
+        pca_full_top_loadings.append({
+            "component": col,
+            "features": [
+                {"name": feat, "loading": round(float(loadings_df.loc[feat, col]), 3)}
+                for feat in top.index
+            ],
+        })
+
+    full_scores = full_pca.transform(full_scaled)
+    pca_mod.plot_scree(full_pca)
+    pca_mod.plot_scatter(cleaned_df, full_scores, full_var)
+
     return {
         "km_centers": km_centers,
         "km_labels_count": km_labels_count,
@@ -786,6 +827,13 @@ def _compute_unsupervised(cleaned_df):
         "normal_total": normal_total,
         "anomaly_records": anomaly_records,
         "anomaly_output": anomaly_out.strip()[:2000],
+        "pca_full_features": len(full_feats),
+        "pca_full_pc1": round(float(full_var[0] * 100), 2),
+        "pca_full_pc2": round(float(full_var[1] * 100), 2),
+        "pca_full_n90": int(np.searchsorted(full_cum, 0.90) + 1),
+        "pca_full_n95": int(np.searchsorted(full_cum, 0.95) + 1),
+        "pca_full_table": pca_full_table,
+        "pca_full_top_loadings": pca_full_top_loadings,
     }
 
 
